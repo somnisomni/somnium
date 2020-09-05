@@ -2256,11 +2256,11 @@ static ngx_int_t
 ngx_http_variable_nginx_version(ngx_http_request_t *r,
     ngx_http_variable_value_t *v, uintptr_t data)
 {
-    v->len = sizeof(NGINX_VERSION) - 1;
+    v->len = sizeof(SOMNIUM_VERSION) - 1;
     v->valid = 1;
     v->no_cacheable = 0;
     v->not_found = 0;
-    v->data = (u_char *) NGINX_VERSION;
+    v->data = (u_char *) SOMNIUM_VERSION;
 
     return NGX_OK;
 }

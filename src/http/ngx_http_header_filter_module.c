@@ -46,9 +46,9 @@ ngx_module_t  ngx_http_header_filter_module = {
 };
 
 
-static u_char ngx_http_server_string[] = "Server: nginx" CRLF;
-static u_char ngx_http_server_full_string[] = "Server: " NGINX_VER CRLF;
-static u_char ngx_http_server_build_string[] = "Server: " NGINX_VER_BUILD CRLF;
+static u_char ngx_http_server_string[] = "Server: somnium" CRLF;
+static u_char ngx_http_server_full_string[] = "Server: " SOMNIUM_VER CRLF;
+static u_char ngx_http_server_build_string[] = "Server: " SOMNIUM_VER_BUILD CRLF;
 
 
 static ngx_str_t ngx_http_status_lines[] = {

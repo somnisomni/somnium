@@ -148,18 +148,18 @@ ngx_http_v2_header_filter(ngx_http_request_t *r)
     ngx_http_core_srv_conf_t  *cscf;
     u_char                     addr[NGX_SOCKADDR_STRLEN];
 
-    static const u_char nginx[5] = "\x84\xaa\x63\x55\xe7";
+    static const u_char nginx[6] = "\x85\x41\xe9\xa8\xd6\xd3";  // somnium
 #if (NGX_HTTP_GZIP)
     static const u_char accept_encoding[12] =
         "\x8b\x84\x84\x2d\x69\x5b\x05\x44\x3c\x86\xaa\x6f";
 #endif
 
-    static size_t nginx_ver_len = ngx_http_v2_literal_size(NGINX_VER);
-    static u_char nginx_ver[ngx_http_v2_literal_size(NGINX_VER)];
+    static size_t nginx_ver_len = ngx_http_v2_literal_size(SOMNIUM_VER);
+    static u_char nginx_ver[ngx_http_v2_literal_size(SOMNIUM_VER)];
 
     static size_t nginx_ver_build_len =
-                                  ngx_http_v2_literal_size(NGINX_VER_BUILD);
-    static u_char nginx_ver_build[ngx_http_v2_literal_size(NGINX_VER_BUILD)];
+                                  ngx_http_v2_literal_size(SOMNIUM_VER_BUILD);
+    static u_char nginx_ver_build[ngx_http_v2_literal_size(SOMNIUM_VER_BUILD)];
 
     stream = r->stream;
 
@@ -468,12 +468,12 @@ ngx_http_v2_header_filter(ngx_http_request_t *r)
         if (clcf->server_tokens == NGX_HTTP_SERVER_TOKENS_ON) {
             ngx_log_debug1(NGX_LOG_DEBUG_HTTP, fc->log, 0,
                            "http2 output header: \"server: %s\"",
-                           NGINX_VER);
+                           SOMNIUM_VER);
 
         } else if (clcf->server_tokens == NGX_HTTP_SERVER_TOKENS_BUILD) {
             ngx_log_debug1(NGX_LOG_DEBUG_HTTP, fc->log, 0,
                            "http2 output header: \"server: %s\"",
-                           NGINX_VER_BUILD);
+                           SOMNIUM_VER_BUILD);
 
         } else {
             ngx_log_debug0(NGX_LOG_DEBUG_HTTP, fc->log, 0,
@@ -484,8 +484,8 @@ ngx_http_v2_header_filter(ngx_http_request_t *r)
 
         if (clcf->server_tokens == NGX_HTTP_SERVER_TOKENS_ON) {
             if (nginx_ver[0] == '\0') {
-                p = ngx_http_v2_write_value(nginx_ver, (u_char *) NGINX_VER,
-                                            sizeof(NGINX_VER) - 1, tmp);
+                p = ngx_http_v2_write_value(nginx_ver, (u_char *) SOMNIUM_VER,
+                                            sizeof(SOMNIUM_VER) - 1, tmp);
                 nginx_ver_len = p - nginx_ver;
             }
 
@@ -494,8 +494,8 @@ ngx_http_v2_header_filter(ngx_http_request_t *r)
         } else if (clcf->server_tokens == NGX_HTTP_SERVER_TOKENS_BUILD) {
             if (nginx_ver_build[0] == '\0') {
                 p = ngx_http_v2_write_value(nginx_ver_build,
-                                            (u_char *) NGINX_VER_BUILD,
-                                            sizeof(NGINX_VER_BUILD) - 1, tmp);
+                                            (u_char *) SOMNIUM_VER_BUILD,
+                                            sizeof(SOMNIUM_VER) - 1, tmp);
                 nginx_ver_build_len = p - nginx_ver_build;
             }
 

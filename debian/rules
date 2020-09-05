@@ -94,7 +94,6 @@ override_dh_installlogrotate:
 	dh_installlogrotate --package nginx-common --name=nginx
 
 build.arch.%:
-	config.arch.$*
 	$(MAKE) -C $(BUILDDIR_$*) build
 
 strip.arch.%:

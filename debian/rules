@@ -74,10 +74,10 @@ somnium_configure_flags := \
 %:
 	dh $@ --with systemd
 
-override_dh_auto_configure: config_patch_modules $(foreach flavour,$(FLAVOURS),config.arch.$(flavour))
+override_dh_auto_configure: $(foreach flavour,$(FLAVOURS),config.arch.$(flavour))
 override_dh_auto_build:     $(foreach flavour,$(FLAVOURS),build.arch.$(flavour))
-override_dh_strip:          $(foreach flavour,$(FLAVOURS),strip.arch.$(flavour)) $(foreach mod,$(DYN_MODS),strip.mods.$(mod))
-override_dh_clean:          clean_patch_modules $(foreach flavour,$(FLAVOURS),clean.$(flavour))
+override_dh_strip:          $(foreach flavour,$(FLAVOURS),strip.arch.$(flavour))
+override_dh_clean:          $(foreach flavour,$(FLAVOURS),clean.$(flavour))
 	dh_clean
 
 override_dh_install:
@@ -94,6 +94,7 @@ override_dh_installlogrotate:
 	dh_installlogrotate --package nginx-common --name=nginx
 
 build.arch.%:
+	config.arch.$*
 	$(MAKE) -C $(BUILDDIR_$*) build
 
 strip.arch.%:

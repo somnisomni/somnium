@@ -24,6 +24,7 @@ endif
 common_configure_flags := \
 			--with-cc-opt="$(debian_cflags)" \
 			--with-ld-opt="$(debian_ldflags)" \
+			--with-openssl="$(CURDIR)/modules/openssl" \
 			--prefix=/usr/share/nginx \
 			--conf-path=/etc/nginx/nginx.conf \
 			--http-log-path=/var/log/nginx/access.log \

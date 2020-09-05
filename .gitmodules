@@ -1,0 +1,6 @@
+[submodule "openssl"]
+	path = modules/openssl
+	url = https://github.com/openssl/openssl
+	branch = master
+	shallow = true
+	ignore = dirty

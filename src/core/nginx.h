@@ -13,10 +13,15 @@
 #define NGINX_VERSION      "1.19.3"
 #define NGINX_VER          "nginx/" NGINX_VERSION
 
+#define SOMNIUM_VERSION    "2.0"
+#define SOMNIUM_VER        "somnium " SOMNIUM_VERSION
+
 #ifdef NGX_BUILD
 #define NGINX_VER_BUILD    NGINX_VER " (" NGX_BUILD ")"
+#define SOMNIUM_VER_BUILD  SOMNIUM_VER " (" NGX_BUILD ")"
 #else
 #define NGINX_VER_BUILD    NGINX_VER
+#define SOMNIUM_VER_BUILD  SOMNIUM_VER
 #endif
 
 #define NGINX_VAR          "NGINX"

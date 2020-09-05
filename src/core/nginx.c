@@ -389,8 +389,8 @@ main(int argc, char *const *argv)
 static void
 ngx_show_version_info(void)
 {
-    ngx_write_stderr("somnium version: " SOMNIUM_VER_BUILD NGX_LINEFEED);
-    ngx_write_stderr("nginx version: " NGINX_VER_BUILD NGX_LINEFEED);
+    ngx_write_stderr("* somnium version: " SOMNIUM_VER_BUILD NGX_LINEFEED);
+    ngx_write_stderr("* nginx version: " NGINX_VER_BUILD NGX_LINEFEED);
 
     if (ngx_show_help) {
         ngx_write_stderr(
@@ -425,26 +425,26 @@ ngx_show_version_info(void)
     if (ngx_show_configure) {
 
 #ifdef NGX_COMPILER
-        ngx_write_stderr("built by " NGX_COMPILER NGX_LINEFEED);
+        ngx_write_stderr("* built with specific compiler: " NGX_COMPILER NGX_LINEFEED);
 #endif
 
 #if (NGX_SSL)
         if (ngx_strcmp(ngx_ssl_version(), OPENSSL_VERSION_TEXT) == 0) {
-            ngx_write_stderr("built with " OPENSSL_VERSION_TEXT NGX_LINEFEED);
+            ngx_write_stderr("* built with specific OpenSSL source: " OPENSSL_VERSION_TEXT NGX_LINEFEED);
         } else {
-            ngx_write_stderr("built with " OPENSSL_VERSION_TEXT
+            ngx_write_stderr("* built with specific OpenSSL source: " OPENSSL_VERSION_TEXT
                              " (running with ");
             ngx_write_stderr((char *) (uintptr_t) ngx_ssl_version());
             ngx_write_stderr(")" NGX_LINEFEED);
         }
 #ifdef SSL_CTRL_SET_TLSEXT_HOSTNAME
-        ngx_write_stderr("TLS SNI support enabled" NGX_LINEFEED);
+        ngx_write_stderr("* TLS SNI support enabled" NGX_LINEFEED);
 #else
-        ngx_write_stderr("TLS SNI support disabled" NGX_LINEFEED);
+        ngx_write_stderr("* TLS SNI support disabled" NGX_LINEFEED);
 #endif
 #endif
 
-        ngx_write_stderr("configure arguments:" NGX_CONFIGURE NGX_LINEFEED);
+        ngx_write_stderr(NGX_LINEFEED "* configure arguments:" NGX_CONFIGURE NGX_LINEFEED);
     }
 }
 

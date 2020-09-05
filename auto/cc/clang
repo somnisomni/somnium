@@ -21,7 +21,7 @@ CC_TEST_FLAGS="-pipe"
 
 #NGX_CLANG_OPT="-O2"
 #NGX_CLANG_OPT="-Oz"
-NGX_CLANG_OPT="-O"
+NGX_CLANG_OPT="-Ofast"
 
 case $CPU in
     pentium)
@@ -62,13 +62,13 @@ CC_AUX_FLAGS="$CC_AUX_FLAGS $CPU_OPT"
 CFLAGS="$CFLAGS -pipe $CPU_OPT"
 
 if [ ".$PCRE_OPT" = "." ]; then
-    PCRE_OPT="-O2 -pipe $CPU_OPT"
+    PCRE_OPT="-Ofast -pipe $CPU_OPT"
 else
     PCRE_OPT="$PCRE_OPT -pipe"
 fi
 
 if [ ".$ZLIB_OPT" = "." ]; then
-    ZLIB_OPT="-O2 -pipe $CPU_OPT"
+    ZLIB_OPT="-Ofast -pipe $CPU_OPT"
 else
     ZLIB_OPT="$ZLIB_OPT -pipe"
 fi

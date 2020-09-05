@@ -1,0 +1,14 @@
+[Nginx HTTP]
+title=Web Server (somnium, HTTP)
+description=Small, but very powerful and efficient web server based on NGINX
+ports=80/tcp
+
+[Nginx HTTPS]
+title=Web Server (somnium, HTTPS)
+description=Small, but very powerful and efficient web server based on NGINX
+ports=443/tcp
+
+[Nginx Full]
+title=Web Server (somnium, HTTP + HTTPS)
+description=Small, but very powerful and efficient web server based on NGINX
+ports=80,443/tcp

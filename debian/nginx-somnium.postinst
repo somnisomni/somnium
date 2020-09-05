@@ -1,0 +1,38 @@
+#!/bin/sh
+set -e
+
+case "$1" in
+  abort-upgrade|abort-remove|abort-deconfigure|configure)
+    ;;
+  triggered)
+    if [ -x /etc/init.d/nginx ]; then
+      if [ -s /run/nginx.pid ] && pidof /usr/sbin/nginx >/dev/null; then
+        echo "Triggering nginx reload ..."
+        invoke-rc.d nginx reload || true
+      fi
+    fi
+    exit 0
+    ;;
+  *)
+    echo "postinst called with unknown argument \`$1'" >&2
+    exit 1
+    ;;
+esac
+
+if [ -x /etc/init.d/nginx ]; then
+  if [ -f /run/nginx.pid ] && pidof /usr/sbin/nginx >/dev/null; then
+    invoke-rc.d nginx upgrade || invoke-rc.d nginx restart
+    exit $?
+  else
+    if [ -z "$(ss -nlt 'sport = 80' | grep -v ^State)" ]; then
+      invoke-rc.d nginx start || exit $?
+    else
+      echo "Not attempting to start somnium(nginx), port 80 is already in use."
+      exit 0
+    fi
+  fi
+fi
+
+#DEBHELPER#
+
+exit 0

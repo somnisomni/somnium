@@ -2,7 +2,7 @@ nginx (1.19.3-1+somnium2.0) focal; urgency=medium
 
   * Refine somnium source tree, upstream NGINX to master branch
 
- -- SD SkyKlouD <sdsk@sdsk.one>  Sat, 05 Sep 2020 20:20:20 +0900
+ -- SD SkyKlouD <sdsk@sdsk.one>  Sat, 05 Sep 2020 23:50:39 +0900
 
 
 nginx (1.19.0-1+ubuntu20.04.1+deb.sury.org+1) focal; urgency=medium

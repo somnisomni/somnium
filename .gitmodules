@@ -4,3 +4,9 @@
 	branch = master
 	shallow = true
 	ignore = dirty
+[submodule "ngx_brotli"]
+	path = modules/ngx_brotli
+	url = https://github.com/google/ngx_brotli
+	branch = master
+	shallow = true
+	ignore = dirty

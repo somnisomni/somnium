@@ -60,7 +60,8 @@ somnium_configure_flags := \
 			--with-stream \
 			--with-stream_geoip_module \
 			--with-stream_ssl_module \
-			--with-stream_ssl_preread_module
+			--with-stream_ssl_preread_module \
+			--add-module=$(CURDIR)/modules/ngx_brotli
 
 ### REMOVED BUILD OPTIONS
 #		--with-debug

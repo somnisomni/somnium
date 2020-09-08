@@ -9,6 +9,10 @@
 #include <ngx_core.h>
 #include <nginx.h>
 
+#if (NGX_ZLIB)
+#include <zlib.h>
+#endif
+
 
 static void ngx_show_version_info(void);
 static ngx_int_t ngx_add_inherited_sockets(ngx_cycle_t *cycle);
@@ -430,9 +434,9 @@ ngx_show_version_info(void)
 
 #if (NGX_SSL)
         if (ngx_strcmp(ngx_ssl_version(), OPENSSL_VERSION_TEXT) == 0) {
-            ngx_write_stderr("* built with specific OpenSSL source: " OPENSSL_VERSION_TEXT NGX_LINEFEED);
+            ngx_write_stderr("* built with OpenSSL: " OPENSSL_VERSION_TEXT NGX_LINEFEED);
         } else {
-            ngx_write_stderr("* built with specific OpenSSL source: " OPENSSL_VERSION_TEXT
+            ngx_write_stderr("* built with OpenSSL: " OPENSSL_VERSION_TEXT
                              " (running with ");
             ngx_write_stderr((char *) (uintptr_t) ngx_ssl_version());
             ngx_write_stderr(")" NGX_LINEFEED);
@@ -442,6 +446,10 @@ ngx_show_version_info(void)
 #else
         ngx_write_stderr("* TLS SNI support disabled" NGX_LINEFEED);
 #endif
+#endif
+
+#if (NGX_ZLIB)
+        ngx_write_stderr("* built with zlib: " ZLIB_VERSION);
 #endif
 
         ngx_write_stderr(NGX_LINEFEED "* configure arguments:" NGX_CONFIGURE NGX_LINEFEED);

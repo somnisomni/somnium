@@ -13,6 +13,10 @@
 #include <zlib.h>
 #endif
 
+#if (NGX_PCRE)
+#include <pcre.h>
+#endif
+
 
 static void ngx_show_version_info(void);
 static ngx_int_t ngx_add_inherited_sockets(ngx_cycle_t *cycle);
@@ -393,10 +397,13 @@ main(int argc, char *const *argv)
 static void
 ngx_show_version_info(void)
 {
+    /* VERSION */
     ngx_write_stderr("* somnium version: " SOMNIUM_VER_BUILD NGX_LINEFEED);
     ngx_write_stderr("* nginx version: " NGINX_VER_BUILD NGX_LINEFEED);
 
+    /* HELP */
     if (ngx_show_help) {
+        ngx_write_stderr(NGX_LINEFEED);
         ngx_write_stderr(
             "Usage: nginx [-?hvVtTq] [-s signal] [-c filename] "
                          "[-p prefix] [-g directives]" NGX_LINEFEED
@@ -427,12 +434,15 @@ ngx_show_version_info(void)
     }
 
     if (ngx_show_configure) {
-
+        /* COMPILER */
 #ifdef NGX_COMPILER
+        ngx_write_stderr(NGX_LINEFEED);
         ngx_write_stderr("* built with specific compiler: " NGX_COMPILER NGX_LINEFEED);
 #endif
 
+        /* SSL */
 #if (NGX_SSL)
+        ngx_write_stderr(NGX_LINEFEED);
         if (ngx_strcmp(ngx_ssl_version(), OPENSSL_VERSION_TEXT) == 0) {
             ngx_write_stderr("* built with OpenSSL: " OPENSSL_VERSION_TEXT NGX_LINEFEED);
         } else {
@@ -448,11 +458,23 @@ ngx_show_version_info(void)
 #endif
 #endif
 
+        /* ZLIB */
 #if (NGX_ZLIB)
-        ngx_write_stderr("* built with zlib: " ZLIB_VERSION);
+        ngx_write_stderr(NGX_LINEFEED);
+        ngx_write_stderr("* built with zlib: " ZLIB_VERSION NGX_LINEFEED);
 #endif
 
-        ngx_write_stderr(NGX_LINEFEED "* configure arguments:" NGX_CONFIGURE NGX_LINEFEED);
+        /* PCRE */
+#if (NGX_PCRE)
+        ngx_write_stderr(NGX_LINEFEED);
+        ngx_write_stderr("* built with PCRE: ");
+        ngx_write_stderr((char *) pcre_version());
+        ngx_write_stderr(NGX_LINEFEED);
+#endif
+
+        /* CONFIGURE ARGUMENTS */
+        ngx_write_stderr(NGX_LINEFEED);
+        ngx_write_stderr("* configure arguments:" NGX_CONFIGURE NGX_LINEFEED);
     }
 }
 

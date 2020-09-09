@@ -16,3 +16,9 @@
 	branch = master
 	shallow = true
 	ignore = dirty
+[submodule "pcre"]
+	path = modules/pcre
+	url = https://github.com/SDSkyKlouD/pcre-old
+	branch = master
+	shallow = true
+	ignore = dirty

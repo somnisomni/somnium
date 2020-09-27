@@ -1058,6 +1058,7 @@ ngx_http_v2_state_read_data(ngx_http_v2_connection_t *h2c, u_char *pos,
     size_t                   size;
     ngx_buf_t               *buf;
     ngx_int_t                rc;
+    ngx_connection_t        *fc;
     ngx_http_request_t      *r;
     ngx_http_v2_stream_t    *stream;
     ngx_http_v2_srv_conf_t  *h2scf;
@@ -1076,8 +1077,16 @@ ngx_http_v2_state_read_data(ngx_http_v2_connection_t *h2c, u_char *pos,
     }
 
     r = stream->request;
+    fc = r->connection;
 
     if (r->reading_body && !r->request_body_no_buffering) {
+        ngx_log_debug0(NGX_LOG_DEBUG_HTTP, h2c->connection->log, 0,
+                       "skipping http2 DATA frame");
+
+        return ngx_http_v2_state_skip_padded(h2c, pos, end);
+    }
+
+    if (r->headers_in.content_length_n < 0 && !r->headers_in.chunked) {
         ngx_log_debug0(NGX_LOG_DEBUG_HTTP, h2c->connection->log, 0,
                        "skipping http2 DATA frame");
 
@@ -1100,6 +1109,8 @@ ngx_http_v2_state_read_data(ngx_http_v2_connection_t *h2c, u_char *pos,
             stream->skip_data = 1;
             ngx_http_finalize_request(r, rc);
         }
+
+        ngx_http_run_posted_requests(fc);
 
     } else if (size) {
         buf = stream->preread;

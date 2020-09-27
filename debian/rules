@@ -10,6 +10,9 @@ FLAVOURS := somnium
 BASEDIR = $(CURDIR)
 $(foreach flavour,$(FLAVOURS),$(eval BUILDDIR_$(flavour) = $(CURDIR)/debian/build-$(flavour)))
 
+export CC=gcc-10
+export CPP=cpp-10
+
 DEB_BUILD_ARCH ?=$(shell dpkg-architecture -qDEB_BUILD_ARCH)
 ifeq ($(DEB_BUILD_ARCH),sparc)
 	debian_cflags += -m32 -mcpu=ultrasparc
@@ -22,6 +25,8 @@ endif
 
 # configure flags
 common_configure_flags := \
+			--with-cc="$(CC)" \
+			--with-cpp="$(CPP)" \
 			--with-cc-opt="$(debian_cflags)" \
 			--with-ld-opt="$(debian_ldflags)" \
 			--with-openssl="$(CURDIR)/modules/openssl" \

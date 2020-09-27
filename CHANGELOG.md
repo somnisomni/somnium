@@ -8,6 +8,8 @@ somnium 2.0.1
     - **PCRE** : 업데이트 없음
     - **zlib** : 업데이트 없음
     - **ngx_brotli** : 업데이트 없음
+  - `debian/rules` C 컴파일러 및 C 프리프로세서 지정 가능
+    - somnium은 gcc-10과 cpp-10 사용
   - `conf/nginx.conf` 선호 SSL Cipher 목록 지정
   - `conf/nginx.conf` 공백 수정 (Tab -> Space)
   - `conf/snippets/ssl/ssl-cert.example.conf` snippets/ssl/common.conf include 구문 추가

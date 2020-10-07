@@ -1,5 +1,14 @@
 변경 사항
 ========
+somnium 2.1.0
+-------------
+  - 기반 소스/모둘 버전
+    - **NGINX** : master / [1e92a0a](https://github.com/nginx/nginx/commit/1e92a0a4cef98902aed35d7b402a6a402951aba4)
+    - **OpenSSL** : master / [bdde5b4](https://github.com/openssl/openssl/commit/bdde5b46c74852e38e660a16f64d7d8ba1c7c2e2)
+    - **PCRE** : 업데이트 없음
+    - **zlib** : 업데이트 없음
+    - **ngx_brotli** : master / [9aec15e](https://github.com/google/ngx_brotli/commit/9aec15e2aa6feea2113119ba06460af70ab3ea62)
+
 somnium 2.0.1
 -------------
   - 기반 소스/모듈 버전

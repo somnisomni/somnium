@@ -2880,6 +2880,7 @@ ngx_ssl_shutdown(ngx_connection_t *c)
 
         SSL_free(c->ssl->connection);
         c->ssl = NULL;
+        c->recv = ngx_recv;
 
         return NGX_OK;
     }
@@ -2925,6 +2926,7 @@ ngx_ssl_shutdown(ngx_connection_t *c)
         if (n == 1) {
             SSL_free(c->ssl->connection);
             c->ssl = NULL;
+            c->recv = ngx_recv;
 
             return NGX_OK;
         }
@@ -2967,6 +2969,7 @@ ngx_ssl_shutdown(ngx_connection_t *c)
         if (sslerr == SSL_ERROR_ZERO_RETURN || ERR_peek_error() == 0) {
             SSL_free(c->ssl->connection);
             c->ssl = NULL;
+            c->recv = ngx_recv;
 
             return NGX_OK;
         }
@@ -2977,6 +2980,7 @@ ngx_ssl_shutdown(ngx_connection_t *c)
 
         SSL_free(c->ssl->connection);
         c->ssl = NULL;
+        c->recv = ngx_recv;
 
         return NGX_ERROR;
     }
@@ -4057,9 +4061,6 @@ ngx_ssl_session_ticket_key_callback(ngx_ssl_conn_t *ssl_conn,
     ngx_ssl_session_ticket_key_t  *key;
     const EVP_MD                  *digest;
     const EVP_CIPHER              *cipher;
-#if (NGX_DEBUG)
-    u_char                         buf[32];
-#endif
 
     c = ngx_ssl_get_connection(ssl_conn);
     ssl_ctx = c->ssl->session_ctx;
@@ -4081,8 +4082,8 @@ ngx_ssl_session_ticket_key_callback(ngx_ssl_conn_t *ssl_conn,
         /* encrypt session ticket */
 
         ngx_log_debug3(NGX_LOG_DEBUG_EVENT, c->log, 0,
-                       "ssl session ticket encrypt, key: \"%*s\" (%s session)",
-                       ngx_hex_dump(buf, key[0].name, 16) - buf, buf,
+                       "ssl session ticket encrypt, key: \"%*xs\" (%s session)",
+                       (size_t) 16, key[0].name,
                        SSL_session_reused(ssl_conn) ? "reused" : "new");
 
         if (key[0].size == 48) {
@@ -4128,17 +4129,16 @@ ngx_ssl_session_ticket_key_callback(ngx_ssl_conn_t *ssl_conn,
         }
 
         ngx_log_debug2(NGX_LOG_DEBUG_EVENT, c->log, 0,
-                       "ssl session ticket decrypt, key: \"%*s\" not found",
-                       ngx_hex_dump(buf, name, 16) - buf, buf);
+                       "ssl session ticket decrypt, key: \"%*xs\" not found",
+                       (size_t) 16, name);
 
         return 0;
 
     found:
 
         ngx_log_debug3(NGX_LOG_DEBUG_EVENT, c->log, 0,
-                       "ssl session ticket decrypt, key: \"%*s\"%s",
-                       ngx_hex_dump(buf, key[i].name, 16) - buf, buf,
-                       (i == 0) ? " (default)" : "");
+                       "ssl session ticket decrypt, key: \"%*xs\"%s",
+                       (size_t) 16, key[i].name, (i == 0) ? " (default)" : "");
 
         if (key[i].size == 48) {
             cipher = EVP_aes_128_cbc();

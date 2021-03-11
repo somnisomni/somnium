@@ -1,3 +1,9 @@
+nginx (1.19.9-1+somnium2.2.0) focal; urgency=medium
+
+  * See CHANGELOG.md in source tree root
+
+ -- SD SkyKlouD <sdsk@sdsk.one>  Thu, 11 Mar 2021 23:41:00 +0900
+
 nginx (1.19.7-1+somnium2.1.0) focal; urgency=medium
 
   * See CHANGELOG.md in source tree root

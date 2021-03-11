@@ -8,6 +8,9 @@ somnium 2.2.0
     - **PCRE** : 업데이트 없음
     - **zlib** : 업데이트 없음
     - **ngx_brotli** : 업데이트 없음
+  - `conf/snippets/robot/block-all.conf` 추가
+  - `conf/snippets/redirect-https.conf` 추가
+  - `conf/snippets/common.conf` 일부 접근 제한 규칙 추가
 
 somnium 2.1.0
 -------------

@@ -3,8 +3,8 @@
 somnium 2.2.0
 -------------
   - 기반 소스/모둘 버전
-    - **NGINX** : master / [1e92a0a](https://github.com/nginx/nginx/commit/02cca547704f710f26a7480d3fa6b476b0f1dccd)
-    - **OpenSSL** : master / [bdde5b4](https://github.com/openssl/openssl/commit/6bbff162f1d72ed52d705c4c146cd3152ef4648c)
+    - **NGINX** : master / [02cca54](https://github.com/nginx/nginx/commit/02cca547704f710f26a7480d3fa6b476b0f1dccd)
+    - **OpenSSL** : master / [6bbff16](https://github.com/openssl/openssl/commit/6bbff162f1d72ed52d705c4c146cd3152ef4648c)
     - **PCRE** : 업데이트 없음
     - **zlib** : 업데이트 없음
     - **ngx_brotli** : 업데이트 없음

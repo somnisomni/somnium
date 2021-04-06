@@ -3,10 +3,10 @@
 somnium 2.2.0
 -------------
   - 기반 소스/모둘 버전
-    - **NGINX** : master / [02cca54](https://github.com/nginx/nginx/commit/02cca547704f710f26a7480d3fa6b476b0f1dccd)
-    - **OpenSSL** : master / [6bbff16](https://github.com/openssl/openssl/commit/6bbff162f1d72ed52d705c4c146cd3152ef4648c)
+    - **NGINX** : master / [ca9bf16](https://github.com/nginx/nginx/commit/ca9bf16f09ef2b0755bfe880c68dc71b9c46f879)
+    - **OpenSSL** : master / [5ad3e6c](https://github.com/openssl/openssl/commit/5ad3e6c56eb1c295a7de92de5bb2f54614d5c277)
     - **PCRE** : 업데이트 없음
-    - **zlib** : 업데이트 없음
+    - **zlib** : master / [26df674](https://github.com/jtkukunas/zlib/commit/26df674239f0c8b610822de3be62ee62b9bb9bd3)
     - **ngx_brotli** : 업데이트 없음
   - `conf/snippets/robot/block-all.conf` 추가
   - `conf/snippets/redirect-https.conf` 추가

@@ -3,6 +3,7 @@
 somnium next
 -------------
   - `conf/mime.types` MIME 종류 추가/수정/제거
+  - `conf/snippet/ssl/ssl-cert.example.conf → ssl.example.conf` 파일 이름 변경
 
 somnium 2.2.0
 -------------

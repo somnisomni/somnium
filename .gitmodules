@@ -20,5 +20,5 @@
 	path = modules/zlib-ng
 	url = https://github.com/zlib-ng/zlib-ng
 	branch = develop
-        shallow = true
-        ignore = dirty
+	shallow = true
+	ignore = dirty

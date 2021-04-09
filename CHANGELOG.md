@@ -8,6 +8,7 @@ somnium 2.2.1
     - **PCRE** : 업데이트 없음
     - **zlib** : 업데이트 없음
     - **ngx_brotli** : 업데이트 없음
+  - OpenSSL 소스 브랜치를 `master`에서 `OpenSSL_1_1_1-stable`로 변경
   - `conf/mime.types` MIME 종류 추가/수정/제거
   - `conf/snippet/ssl/ssl-cert.example.conf → ssl.example.conf` 파일 이름 변경
   - 빌드 시 C++ 컴파일러로 `g++-10` 사용

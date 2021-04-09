@@ -22,3 +22,9 @@
 	branch = develop
 	shallow = true
 	ignore = dirty
+[submodule "zlib"]
+	path = modules/zlib
+	url = https://github.com/jtkukunas/zlib
+	branch = master
+	shallow = true
+	ignore = dirty

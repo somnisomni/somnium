@@ -1,9 +1,16 @@
 변경 사항
 ========
-somnium next
+somnium 2.2.1
 -------------
+  - 기반 소스/모듈 버전
+    - **NGINX** : master / [eb52de8](https://github.com/nginx/nginx/commit/eb52de83114e8d98722cd17ec8435c47956b6315)
+    - **OpenSSL** : OpenSSL_1_1_1-stable / [f82f539](https://github.com/openssl/openssl/commit/5f82f5392f39797c1cf3a5d114c0125f121b0f769)
+    - **PCRE** : 업데이트 없음
+    - **zlib** : 업데이트 없음
+    - **ngx_brotli** : 업데이트 없음
   - `conf/mime.types` MIME 종류 추가/수정/제거
   - `conf/snippet/ssl/ssl-cert.example.conf → ssl.example.conf` 파일 이름 변경
+  - 빌드 시 C++ 컴파일러로 `g++-10` 사용
 
 somnium 2.2.0
 -------------

@@ -12,6 +12,7 @@ $(foreach flavour,$(FLAVOURS),$(eval BUILDDIR_$(flavour) = $(CURDIR)/debian/buil
 
 export CC=gcc-10
 export CPP=cpp-10
+export CXX=g++-10
 
 DEB_BUILD_ARCH ?=$(shell dpkg-architecture -qDEB_BUILD_ARCH)
 ifeq ($(DEB_BUILD_ARCH),sparc)

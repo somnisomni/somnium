@@ -2,6 +2,7 @@
 ========
 somnium next
 -------------
+  - headers-more 모듈 추가
   - `snippets/3rdparty/vouch` Vouch 인증 스니펫 추가
   - `snippets/proxy` 리버스 프록시 스니펫을 개별 폴더로 이동
   - `snippets/proxy/proxy-websocket.conf` WebSocket 리버스 프록시 스니펫 추가

@@ -28,3 +28,9 @@
 	branch = master
 	shallow = true
 	ignore = dirty
+[submodule "headers-more"]
+	path = modules/headers-more
+	url = https://github.com/openresty/headers-more-nginx-module
+	branch = master
+	shallow = true
+	ignore = dirty

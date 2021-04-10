@@ -78,7 +78,8 @@ somnium_configure_flags := \
 			--without-mail_pop3_module \
 			--without-mail_imap_module \
 			--without-mail_smtp_module \
-			--add-module=$(CURDIR)/modules/ngx_brotli
+			--add-module=$(CURDIR)/modules/ngx_brotli \
+			--add-module=$(CURDIR)/modules/headers-more
 
 ### REMOVED BUILD OPTIONS
 ## COMMON

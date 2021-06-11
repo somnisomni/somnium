@@ -1,7 +1,8 @@
 변경 사항
 ========
-somnium next
+somnium 2.3.0
 -------------
+  - NGINX 최신 소스 코드 병합
   - headers-more 모듈 추가
   - `snippets/3rdparty/vouch` Vouch 인증 스니펫 추가
   - `snippets/proxy` 리버스 프록시 스니펫을 개별 폴더로 이동

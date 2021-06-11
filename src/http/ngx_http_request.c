@@ -1043,12 +1043,14 @@ ngx_http_ssl_certificate(ngx_ssl_conn_t *ssl_conn, void *arg)
     }
 
     ngx_http_free_request(r, 0);
+    c->log->action = "SSL handshaking";
     c->destroyed = 0;
     return 1;
 
 failed:
 
     ngx_http_free_request(r, 0);
+    c->log->action = "SSL handshaking";
     c->destroyed = 0;
     return 0;
 }
@@ -3397,6 +3399,8 @@ ngx_http_set_lingering_close(ngx_connection_t *c)
 #if (NGX_HTTP_SSL)
     if (c->ssl) {
         ngx_int_t  rc;
+
+        c->ssl->shutdown_without_free = 1;
 
         rc = ngx_ssl_shutdown(c);
 

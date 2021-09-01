@@ -1,4 +1,4 @@
-nginx (1.12.2-1+somnium2.4.0) focal; urgency=medium
+nginx (1.21.2-1+somnium2.4.0) focal; urgency=medium
 
   * See CHANGELOG.md in source tree root
 

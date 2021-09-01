@@ -1,3 +1,9 @@
+nginx (1.12.2-1+somnium2.4.0) focal; urgency=medium
+
+  * See CHANGELOG.md in source tree root
+
+ -- somni <me@somni.one>  Wed, 1 Sep 2021 17:35:00 +0900
+
 nginx (1.21.1-2+somnium2.3.1) focal; urgency=medium
 
   * See CHANGELOG.md in source tree root

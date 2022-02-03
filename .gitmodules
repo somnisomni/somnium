@@ -10,9 +10,9 @@
 	branch = master
 	shallow = true
 	ignore = dirty
-[submodule "pcre"]
-	path = modules/pcre
-	url = https://github.com/SDSkyKlouD/pcre-old
+[submodule "pcre2"]
+	path = modules/pcre2
+	url = https://github.com/PhilipHazel/pcre2
 	branch = master
 	shallow = true
 	ignore = dirty
@@ -20,12 +20,6 @@
 	path = modules/zlib-ng
 	url = https://github.com/zlib-ng/zlib-ng
 	branch = develop
-	shallow = true
-	ignore = dirty
-[submodule "zlib"]
-	path = modules/zlib
-	url = https://github.com/jtkukunas/zlib
-	branch = master
 	shallow = true
 	ignore = dirty
 [submodule "headers-more"]

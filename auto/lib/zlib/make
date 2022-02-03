@@ -32,7 +32,11 @@ esac
 
 
 done=NO
+config_opt=
 
+if [ $ZLIB_NG = YES ]; then
+    config_opt="--zlib-compat"
+fi
 
 case "$NGX_PLATFORM" in
 
@@ -52,7 +56,7 @@ END
 
 $ZLIB/libz.a:	$NGX_MAKEFILE
 	cd $ZLIB \\
-	&& \$(MAKE) distclean \\
+	&& if [ -f Makefile ]; then \$(MAKE) distclean; fi \\
 	&& \$(MAKE) -f win32/Makefile.gcc \\
 		CFLAGS="$ZLIB_OPT" CC="\$(CC)" \\
 		libz.a
@@ -75,10 +79,10 @@ END
 
 $ZLIB/libz.a:	$NGX_MAKEFILE
 	cd $ZLIB \\
-	&& \$(MAKE) distclean \\
+	&& if [ -f Makefile ]; then \$(MAKE) distclean; fi \\
 	&& cp contrib/asm586/match.S . \\
 	&& CFLAGS="$ZLIB_OPT -DASMV" CC="\$(CC)" \\
-		./configure \\
+		./configure $config_opt \\
 	&& \$(MAKE) OBJA=match.o libz.a
 
 END
@@ -92,10 +96,10 @@ END
 
 $ZLIB/libz.a:	$NGX_MAKEFILE
 	cd $ZLIB \\
-	&& \$(MAKE) distclean \\
+	&& if [ -f Makefile ]; then \$(MAKE) distclean; fi \\
 	&& cp contrib/asm686/match.S . \\
 	&& CFLAGS="$ZLIB_OPT -DASMV" CC="\$(CC)" \\
-		./configure \\
+		./configure $config_opt \\
 	&& \$(MAKE) OBJA=match.o libz.a
 
 END
@@ -125,9 +129,9 @@ if [ $done = NO ]; then
 
 $ZLIB/libz.a:	$NGX_MAKEFILE
 	cd $ZLIB \\
-	&& \$(MAKE) distclean \\
+	&& if [ -f Makefile ]; then \$(MAKE) distclean; fi \\
 	&& CFLAGS="$ZLIB_OPT" CC="\$(CC)" \\
-		./configure \\
+		./configure $config_opt \\
 	&& \$(MAKE) libz.a
 
 END

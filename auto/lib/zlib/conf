@@ -6,6 +6,12 @@
 if [ $ZLIB != NONE ]; then
     CORE_INCS="$CORE_INCS $ZLIB"
 
+    if [ -f $ZLIB/zlib-ng.h.in ]; then
+        ZLIB_NG=YES
+    else
+        ZLIB_NG=NO
+    fi
+
     case "$NGX_CC_NAME" in
 
         msvc | owc | bcc)

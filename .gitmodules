@@ -10,6 +10,12 @@
 	branch = master
 	shallow = true
 	ignore = dirty
+[submodule "headers-more"]
+	path = modules/headers-more
+	url = https://github.com/openresty/headers-more-nginx-module
+	branch = master
+	shallow = true
+	ignore = dirty
 [submodule "pcre2"]
 	path = modules/pcre2
 	url = https://github.com/PhilipHazel/pcre2
@@ -20,11 +26,5 @@
 	path = modules/zlib-ng
 	url = https://github.com/zlib-ng/zlib-ng
 	branch = develop
-	shallow = true
-	ignore = dirty
-[submodule "headers-more"]
-	path = modules/headers-more
-	url = https://github.com/openresty/headers-more-nginx-module
-	branch = master
 	shallow = true
 	ignore = dirty

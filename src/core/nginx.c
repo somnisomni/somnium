@@ -13,7 +13,9 @@
 #include <zlib.h>
 #endif
 
-#if (NGX_PCRE)
+#if (NGX_PCRE && NGX_PCRE2)
+#include <pcre2.h>
+#elif (NGX_PCRE && !NGX_PCRE2)
 #include <pcre.h>
 #endif
 
@@ -472,7 +474,15 @@ ngx_show_version_info(void)
 #endif
 
         /* PCRE */
-#if (NGX_PCRE)
+#if (NGX_PCRE && NGX_PCRE2)
+        char pcre2_version_buffer[64];
+        (void) pcre2_config(PCRE2_CONFIG_VERSION, pcre2_version_buffer);
+
+        ngx_write_stderr(NGX_LINEFEED);
+        ngx_write_stderr("* built with PCRE2: ");
+        ngx_write_stderr(pcre2_version_buffer);
+        ngx_write_stderr(NGX_LINEFEED);
+#elif (NGX_PCRE && !NGX_PCRE2)
         ngx_write_stderr(NGX_LINEFEED);
         ngx_write_stderr("* built with PCRE: ");
         ngx_write_stderr((char *) pcre_version());

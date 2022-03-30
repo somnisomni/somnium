@@ -1,4 +1,8 @@
 #!/usr/bin/make -f
+
+# GNU toolchains version (gcc-# cpp-# g++-#)
+GNU_TOOLCHAIN_VERSION = 10
+
 export DH_VERBOSE=1
 
 export DEB_BUILD_MAINT_OPTIONS=hardening=+all
@@ -10,9 +14,9 @@ FLAVOURS := somnium
 BASEDIR = $(CURDIR)
 $(foreach flavour,$(FLAVOURS),$(eval BUILDDIR_$(flavour) = $(CURDIR)/debian/build-$(flavour)))
 
-export CC=gcc-10
-export CPP=cpp-10
-export CXX=g++-10
+export CC=gcc-$(GNU_TOOLCHAIN_VERSION)
+export CXX=g++-$(GNU_TOOLCHAIN_VERSION)
+export CPP=cpp-$(GNU_TOOLCHAIN_VERSION)
 
 DEB_BUILD_ARCH ?=$(shell dpkg-architecture -qDEB_BUILD_ARCH)
 ifeq ($(DEB_BUILD_ARCH),sparc)

@@ -1,7 +1,7 @@
 #!/usr/bin/make -f
 
 # GNU toolchains version (gcc-# cpp-# g++-#)
-GNU_TOOLCHAIN_VERSION = 10
+GNU_TOOLCHAIN_VERSION = 11
 
 export DH_VERBOSE=1
 

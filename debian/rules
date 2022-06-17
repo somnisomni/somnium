@@ -14,12 +14,14 @@ FLAVOURS := somnium
 BASEDIR = $(CURDIR)
 $(foreach flavour,$(FLAVOURS),$(eval BUILDDIR_$(flavour) = $(CURDIR)/debian/build-$(flavour)))
 
-export CC=gcc-$(GNU_TOOLCHAIN_VERSION)
-export CXX=g++-$(GNU_TOOLCHAIN_VERSION)
-export CPP=cpp-$(GNU_TOOLCHAIN_VERSION)
+DEB_TARGET_MULTIARCH ?= $(shell dpkg-architecture -qDEB_TARGET_MULTIARCH)-
 
-DEB_BUILD_ARCH ?=$(shell dpkg-architecture -qDEB_BUILD_ARCH)
-ifeq ($(DEB_BUILD_ARCH),sparc)
+export CC=$(DEB_TARGET_MULTIARCH)gcc-$(GNU_TOOLCHAIN_VERSION)
+export CXX=$(DEB_TARGET_MULTIARCH)g++-$(GNU_TOOLCHAIN_VERSION)
+export CPP=$(DEB_TARGET_MULTIARCH)cpp-$(GNU_TOOLCHAIN_VERSION)
+
+DEB_TARGET_ARCH ?= $(shell dpkg-architecture -qDEB_TARGET_ARCH)
+ifeq ($(DEB_TARGET_ARCH),sparc)
 	debian_cflags += -m32 -mcpu=ultrasparc
 endif
 

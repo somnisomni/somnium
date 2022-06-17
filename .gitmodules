@@ -1,30 +1,25 @@
 [submodule "openssl"]
 	path = modules/openssl
 	url = https://github.com/openssl/openssl
-	branch = master
-	shallow = true
+	branch = openssl-3.0
 	ignore = dirty
 [submodule "ngx_brotli"]
 	path = modules/ngx_brotli
 	url = https://github.com/google/ngx_brotli
 	branch = master
-	shallow = true
 	ignore = dirty
 [submodule "headers-more"]
 	path = modules/headers-more
 	url = https://github.com/openresty/headers-more-nginx-module
 	branch = master
-	shallow = true
 	ignore = dirty
 [submodule "pcre2"]
 	path = modules/pcre2
 	url = https://github.com/PhilipHazel/pcre2
 	branch = master
-	shallow = true
 	ignore = dirty
 [submodule "zlib-ng"]
 	path = modules/zlib-ng
 	url = https://github.com/zlib-ng/zlib-ng
 	branch = develop
-	shallow = true
 	ignore = dirty

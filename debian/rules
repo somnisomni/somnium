@@ -14,16 +14,29 @@ FLAVOURS := somnium
 BASEDIR = $(CURDIR)
 $(foreach flavour,$(FLAVOURS),$(eval BUILDDIR_$(flavour) = $(CURDIR)/debian/build-$(flavour)))
 
-DEB_TARGET_MULTIARCH ?= $(shell dpkg-architecture -qDEB_TARGET_MULTIARCH)-
+### Compilers ###
+CC = gcc-$(GNU_TOOLCHAIN_VERSION)
+CXX = g++-$(GNU_TOOLCHAIN_VERSION)
+CPP = cpp-$(GNU_TOOLCHAIN_VERSION)
 
-export CC=$(DEB_TARGET_MULTIARCH)gcc-$(GNU_TOOLCHAIN_VERSION)
-export CXX=$(DEB_TARGET_MULTIARCH)g++-$(GNU_TOOLCHAIN_VERSION)
-export CPP=$(DEB_TARGET_MULTIARCH)cpp-$(GNU_TOOLCHAIN_VERSION)
+DEB_BUILD_ARCH ?= $(shell dpkg-architecture -qDEB_BUILD_ARCH)
+DEB_HOST_ARCH ?= $(shell dpkg-architecture -qDEB_HOST_ARCH)
 
-DEB_TARGET_ARCH ?= $(shell dpkg-architecture -qDEB_TARGET_ARCH)
-ifeq ($(DEB_TARGET_ARCH),sparc)
+ifeq ($(DEB_HOST_ARCH),sparc)
 	debian_cflags += -m32 -mcpu=ultrasparc
 endif
+
+ifneq ($(DEB_BUILD_ARCH),$(DEB_HOST_ARCH))
+	DEB_HOST_MULTIARCH ?= $(shell dpkg-architecture -qDEB_HOST_MULTIARCH)
+	CC := $(DEB_HOST_MULTIARCH)-$(CC)
+	CXX := $(DEB_HOST_MULTIARCH)-$(CXX)
+	CPP := $(DEB_HOST_MULTIARCH)-$(CPP)
+endif
+
+export CC := $(CC)
+export CXX := $(CXX)
+export CPP := $(CPP)
+######
 
 ifneq (,$(filter parallel=%,$(DEB_BUILD_OPTIONS)))
 	NUMJOBS = $(patsubst parallel=%,%,$(filter parallel=%,$(DEB_BUILD_OPTIONS)))

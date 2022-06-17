@@ -1,5 +1,12 @@
 변경 사항
 ========
+somnium 2.7.0
+-------------
+  - NGINX 최신 소스 코드 병합
+  - OpenSSL 소스 브랜치를 `openssl-3.0`으로 변경
+  - `snippets/common.conf` try_files 절 스니펫 분리 (→ `snippets/common-default-tryfiles.conf`)
+  - `snippets/fastcgi.conf` FastCGI 파라미터 `SERVER_SOFTWARE` 값에 서버 버전 제거
+
 somnium 2.6.0
 -------------
   - NGINX 최신 소스 코드 병합

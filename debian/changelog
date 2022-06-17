@@ -1,3 +1,9 @@
+nginx (1.23.0-1+somnium2.7.0) unstable; urgency=medium
+
+  * See CHANGELOG.md in source tree root
+
+ -- somni <me@somni.one>  Fri, 17 Jul 2022 21:42:00 +0900
+
 nginx (1.21.7-1+somnium2.6.0) focal; urgency=medium
 
   * See CHANGELOG.md in source tree root

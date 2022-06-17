@@ -2,7 +2,7 @@ Source: nginx
 Section: httpd
 Priority: optional
 Maintainer: Debian Nginx Maintainers <pkg-nginx-maintainers@alioth-lists.debian.net>
-Uploaders: SD SkyKlouD <sdsk@sdsk.one>
+Uploaders: somni <me@somni.one>
 Build-Depends: debhelper (>= 9.20160709~),
                dpkg-dev (>= 1.15.5),
                libexpat-dev,
@@ -23,8 +23,8 @@ Build-Depends: debhelper (>= 9.20160709~),
                zlib1g-dev
 Standards-Version: 4.5.0
 Homepage: https://nginx.net
-Vcs-Git: https://github.com/SDSkyKlouD/somnium.git
-Vcs-Browser: https://github.com/SDSkyKlouD/somnium
+Vcs-Git: https://github.com/somnisomni/somnium.git
+Vcs-Browser: https://github.com/somnisomni/somnium
 Rules-Requires-Root: no
 
 Package: nginx
@@ -63,7 +63,7 @@ Provides: httpd, httpd-cgi, nginx
 Conflicts: nginx-extras, nginx-light, nginx-core, nginx-full
 Description: somnium(nginx) web/proxy server (standard version)
  This package provides a version of somnium, which is rebranded and customized NGINX
- for SD SkyKlouD servers.
+ for somni servers.
  .
  Nginx ("engine X") is a high-performance web and reverse proxy server
  created by Igor Sysoev. It can be used both as a standalone web server

@@ -1,3 +1,5 @@
 /debian/build-*
 /debian/.debhelper
 /.pc
+
+nohup.out

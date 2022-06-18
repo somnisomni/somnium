@@ -15,14 +15,47 @@ types {
 
     # Image types
     image/apng                            apng;
+    image/avif                            avif;
+    image/avif-sequence                   avifs;
     image/gif                             gif;
     image/jpeg                            jpeg jpg;
+    image/jxr                             jxr;
     image/png                             png;
     image/tiff                            tif tiff;
     image/x-icon                          ico;
     image/bmp                             bmp;
     image/svg+xml                         svg svgz;
     image/webp                            webp;
+    image/heif                            heif;
+    image/heif-sequence                   heifs;
+    image/heic                            heic;
+    image/heic-sequence                   heics;
+    image/vnd.radiance                    hdr rgbe;
+    image/x-exr                           exr;
+    image/vnd.adobe.photoshop             psd;
+    image/x-xcf                           xcf;
+    application/octet-stream              clip kra sai afdesign;
+
+    # Audio types
+    audio/aac                             aac;
+    audio/flac                            flac;
+    audio/midi                            mid midi kar;
+    audio/mp4                             m4a;
+    audio/mpeg                            mp3;
+    audio/ogg                             ogg oga opus;
+    audio/wav                             wav;
+    audio/webm                            weba;
+
+    # Video types
+    video/mp4                             mp4 m4v;
+    video/mpeg                            mpeg mpg m1v m2v;
+    video/ogg                             ogv;
+    video/quicktime                       mov;
+    video/webm                            webm;
+    video/x-flv                           flv;
+    video/x-matroska                      mkv;
+    video/x-ms-wmv                        wmv;
+    video/x-msvideo                       avi;
 
     # Font types
     application/vnd.ms-fontobject         eot;
@@ -41,6 +74,7 @@ types {
     application/vnd.ms-excel              xls;
     application/vnd.ms-powerpoint         ppt;
     application/wasm                      wasm;
+    application/xaml                      xaml;
     application/x-makeself                run;
     application/x-perl                    pl pm;
     application/x-pilot                   prc pdb;
@@ -48,6 +82,20 @@ types {
     application/x-sh                      sh;
     application/x-shockwave-flash         swf;
     application/x-x509-ca-cert            der pem crt;
+
+    # 3D vector/model document & CAD document types
+    application/x-3ds                     3ds;
+    application/x-3dxmlplugin             3dxml;
+    application/x-blender                 blend blender;
+    image/vnd.dwg                         dwg;
+    image/vnd.dxf                         dxf;
+    model/vnd-dwf                         dwf;
+    model/gltf+json                       gltf;
+    model/gltf-binary                     glb;
+    model/obj                             obj;
+    model/stl                             stl;
+    model/u3d                             u3d;
+    model/x3d+xml                         x3d;
 
     # Disk / Package types
     application/vnd.android.package-archive     apk;
@@ -76,25 +124,4 @@ types {
     application/vnd.oasis.opendocument.presentation                            odp;
     application/vnd.oasis.opendocument.spreadsheet                             ods;
     application/vnd.oasis.opendocument.text                                    odt;
-
-    # Audio types
-    audio/aac                             aac;
-    audio/flac                            flac;
-    audio/midi                            mid midi kar;
-    audio/mp4                             m4a;
-    audio/mpeg                            mp3;
-    audio/ogg                             ogg oga opus;
-    audio/wav                             wav;
-    audio/webm                            weba;
-
-    # Video types
-    video/mp4                             mp4 m4v;
-    video/mpeg                            mpeg mpg m1v m2v;
-    video/ogg                             ogv;
-    video/quicktime                       mov;
-    video/webm                            webm;
-    video/x-flv                           flv;
-    video/x-matroska                      mkv;
-    video/x-ms-wmv                        wmv;
-    video/x-msvideo                       avi;
 }

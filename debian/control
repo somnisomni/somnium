@@ -3,25 +3,21 @@ Section: httpd
 Priority: optional
 Maintainer: Debian Nginx Maintainers <pkg-nginx-maintainers@alioth-lists.debian.net>
 Uploaders: somni <me@somni.one>
-Build-Depends: debhelper (>= 9.20160709~),
+Build-Depends: debhelper (>= 10),
                dpkg-dev (>= 1.15.5),
                libexpat-dev,
                libgd-dev,
                libgeoip-dev,
                libhiredis-dev (>= 0.13),
-               liblua5.1-0-dev [!i386 !amd64 !kfreebsd-i386 !armel !armhf !powerpc !powerpcspe !mips !mipsel !arm64 !ppc64el],
-               libluajit-5.1-dev [i386 amd64 kfreebsd-i386 armel armhf powerpc powerpcspe mips mipsel arm64 ppc64el],
                libmaxminddb-dev,
                libmhash-dev,
                libpam0g-dev,
-               libpcre3-dev,
                libperl-dev,
                libssl-dev,
                libxslt1-dev,
                po-debconf,
-               quilt,
-               zlib1g-dev
-Standards-Version: 4.5.0
+               quilt
+Standards-Version: 4.6.0
 Homepage: https://nginx.net
 Vcs-Git: https://github.com/somnisomni/somnium.git
 Vcs-Browser: https://github.com/somnisomni/somnium

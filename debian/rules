@@ -29,6 +29,8 @@ ifeq ($(DEB_HOST_ARCH),sparc)
 endif
 
 ifneq ($(DEB_BUILD_ARCH),$(DEB_HOST_ARCH))
+	$(info Cross-compiling, build arch: $(DEB_BUILD_ARCH) / host arch: $(DEB_HOST_ARCH))
+
 	DEB_HOST_MULTIARCH ?= $(shell dpkg-architecture -qDEB_HOST_MULTIARCH)
 	DEB_HOST_ARCH_OS ?= $(shell dpkg-architecture -qDEB_HOST_ARCH_OS)
 
@@ -48,6 +50,7 @@ ifneq ($(DEB_BUILD_ARCH),$(DEB_HOST_ARCH))
 		OPENSSL_CROSS_COMPILE_OPTION := $(DEB_HOST_ARCH_OS)-x86
 	endif
 
+	$(info Will use OpenSSL build target: $(OPENSSL_CROSS_COMPILE_OPTION))
 endif
 
 export CC := $(CC)

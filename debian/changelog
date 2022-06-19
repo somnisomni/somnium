@@ -1,4 +1,4 @@
-nginx (1.23.0-1+somnium2.7.0) unstable; urgency=medium
+nginx (1.23.0-1+somnium2.7.0) jammy; urgency=medium
 
   * See CHANGELOG.md in source tree root
 

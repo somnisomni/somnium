@@ -21,15 +21,33 @@ CPP = cpp-$(GNU_TOOLCHAIN_VERSION)
 DEB_BUILD_ARCH ?= $(shell dpkg-architecture -qDEB_BUILD_ARCH)
 DEB_HOST_ARCH ?= $(shell dpkg-architecture -qDEB_HOST_ARCH)
 
+CROSS_COMPILE :=
+OPENSSL_CROSS_COMPILE_OPTION :=
+
 ifeq ($(DEB_HOST_ARCH),sparc)
 	debian_cflags += -m32 -mcpu=ultrasparc
 endif
 
 ifneq ($(DEB_BUILD_ARCH),$(DEB_HOST_ARCH))
 	DEB_HOST_MULTIARCH ?= $(shell dpkg-architecture -qDEB_HOST_MULTIARCH)
+	DEB_HOST_ARCH_OS ?= $(shell dpkg-architecture -qDEB_HOST_ARCH_OS)
+
 	CC := $(DEB_HOST_MULTIARCH)-$(CC)
 	CXX := $(DEB_HOST_MULTIARCH)-$(CXX)
 	CPP := $(DEB_HOST_MULTIARCH)-$(CPP)
+
+	CROSS_COMPILE = 1
+
+	ifeq ($(DEB_HOST_ARCH),"arm64")
+		OPENSSL_CROSS_COMPILE_OPTION := $(DEB_HOST_ARCH_OS)-aarch64
+	endif
+	ifeq ($(DEB_HOST_ARCH),"amd64")
+		OPENSSL_CROSS_COMPILE_OPTION := $(DEB_HOST_ARCH_OS)-x86_64
+	endif
+	ifeq ($(DEB_HOST_ARCH),"i386")
+		OPENSSL_CROSS_COMPILE_OPTION := $(DEB_HOST_ARCH_OS)-x86
+	endif
+
 endif
 
 export CC := $(CC)
@@ -49,7 +67,7 @@ common_configure_flags := \
 			--with-cc-opt="$(debian_cflags)" \
 			--with-ld-opt="$(debian_ldflags)" \
 			--with-openssl="$(CURDIR)/modules/openssl" \
-			--with-openssl-opt="no-ssl3 no-idea no-weak-ssl-ciphers" \
+			--with-openssl-opt="no-ssl3 no-idea no-weak-ssl-ciphers $(OPENSSL_CROSS_COMPILE_OPTION)" \
 			--with-zlib="$(CURDIR)/modules/zlib-ng" \
 			--with-pcre="$(CURDIR)/modules/pcre2" \
 			--prefix=/usr/share/nginx \

@@ -40,15 +40,15 @@ ifneq ($(DEB_BUILD_ARCH),$(DEB_HOST_ARCH))
 
   CROSS_COMPILE = 1
 
-  ifeq ($(DEB_HOST_ARCH),"arm64")
+  ifeq ($(DEB_HOST_ARCH),arm64)
     OPENSSL_CROSS_COMPILE_OPTION = $(DEB_HOST_ARCH_OS)-aarch64
   endif
 
-  ifeq ($(DEB_HOST_ARCH),"amd64")
+  ifeq ($(DEB_HOST_ARCH),amd64)
     OPENSSL_CROSS_COMPILE_OPTION = $(DEB_HOST_ARCH_OS)-x86_64
   endif
 
-  ifeq ($(DEB_HOST_ARCH),"i386")
+  ifeq ($(DEB_HOST_ARCH),i386)
     OPENSSL_CROSS_COMPILE_OPTION = $(DEB_HOST_ARCH_OS)-x86
   endif
 

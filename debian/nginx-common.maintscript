@@ -6,3 +6,5 @@ rm_conffile /etc/nginx/naxsi-ui.conf       1.6.2-2~
 
 # Handle upstart removal
 rm_conffile /etc/init/nginx.conf           1.13.5-1~
+
+rm_conffile /etc/apt/preferences.d/nginx-common.pref 1.20.1-2~ nginx-common

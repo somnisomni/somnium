@@ -1,16 +1,15 @@
 #!/usr/bin/make -f
+include /usr/share/dpkg/default.mk
+export DH_VERBOSE=1
 
 # GNU toolchains version (gcc-# cpp-# g++-#)
 GNU_TOOLCHAIN_VERSION = 12
-
-export DH_VERBOSE=1
 
 export DEB_BUILD_MAINT_OPTIONS=hardening=+all
 debian_cflags:=$(shell dpkg-buildflags --get CFLAGS) -fPIC $(shell dpkg-buildflags --get CPPFLAGS)
 debian_ldflags:=$(shell dpkg-buildflags --get LDFLAGS) -fPIC
 
 FLAVOURS := somnium
-#MODULESDIR = $(CURDIR)/debian/modules
 BASEDIR = $(CURDIR)
 $(foreach flavour,$(FLAVOURS),$(eval BUILDDIR_$(flavour) = $(CURDIR)/debian/build-$(flavour)))
 
@@ -50,7 +49,7 @@ common_configure_flags := \
 			--with-cc-opt="$(debian_cflags)" \
 			--with-ld-opt="$(debian_ldflags)" \
 			--with-openssl="$(CURDIR)/modules/openssl" \
-			--with-openssl-opt="no-ssl2 no-ssl3 no-idea no-weak-ssl-ciphers" \
+			--with-openssl-opt="no-ssl3 no-idea no-weak-ssl-ciphers" \
 			--with-zlib="$(CURDIR)/modules/zlib-ng" \
 			--with-pcre="$(CURDIR)/modules/pcre2" \
 			--prefix=/usr/share/nginx \
@@ -114,7 +113,7 @@ somnium_configure_flags := \
 #		--with-http_random_index_module
 
 %:
-	dh $@ --with systemd
+	dh $@
 
 override_dh_auto_configure: $(foreach flavour,$(FLAVOURS),config.arch.$(flavour))
 override_dh_auto_build:     $(foreach flavour,$(FLAVOURS),build.arch.$(flavour))

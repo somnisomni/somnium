@@ -1,5 +1,16 @@
 변경 사항
 ========
+somnium 2.8.0
+-------------
+  - NGINX 최신 소스 코드 병합
+  - `snippets/proxy/proxy-without-host.conf` 추가
+  - `snippets/3rdparty/vouch/auth-request.example.conf` 프록시 스니펫 include 경로 수정
+  - `mime.types` 일부 MIME 타입 추가
+  - 이미 업스트림에 적용된 패치(`debian/patches/CVE-2019-20372.patch`) 삭제
+  - 최신 Ondřej Surý 데비안 패키징 트리 적용
+  - 빌드 종속성 축소
+  - 불완전한 amd64/aarch64 크로스 컴파일 지원 (비추천)
+
 somnium 2.7.0
 -------------
   - NGINX 최신 소스 코드 병합

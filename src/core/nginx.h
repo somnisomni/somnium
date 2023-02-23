@@ -13,7 +13,7 @@
 #define NGINX_VERSION      "1.23.4"
 #define NGINX_VER          "nginx/" NGINX_VERSION
 
-#define SOMNIUM_VERSION    "2.8.0"
+#define SOMNIUM_VERSION    "2.8.1"
 #define SOMNIUM_VER        "somnium " SOMNIUM_VERSION
 
 #ifdef NGX_BUILD

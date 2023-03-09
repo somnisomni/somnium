@@ -1,7 +1,7 @@
 [submodule "openssl"]
 	path = modules/openssl
 	url = https://github.com/openssl/openssl
-	branch = openssl-3.0
+	branch = openssl-3.1
 	ignore = dirty
 [submodule "ngx_brotli"]
 	path = modules/ngx_brotli

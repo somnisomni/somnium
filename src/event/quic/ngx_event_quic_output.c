@@ -10,9 +10,6 @@
 #include <ngx_event_quic_connection.h>
 
 
-#define NGX_QUIC_MAX_UDP_PAYLOAD_OUT   1252
-#define NGX_QUIC_MAX_UDP_PAYLOAD_OUT6  1232
-
 #define NGX_QUIC_MAX_UDP_SEGMENT_BUF  65487 /* 65K - IPv6 header */
 #define NGX_QUIC_MAX_SEGMENTS            64 /* UDP_MAX_SEGMENTS */
 
@@ -38,6 +35,15 @@
 #define NGX_QUIC_SOCKET_RETRY_DELAY      10 /* ms, for NGX_AGAIN on write */
 
 
+#define ngx_quic_log_packet(log, pkt)                                         \
+    ngx_log_debug6(NGX_LOG_DEBUG_EVENT, log, 0,                               \
+                   "quic packet tx %s bytes:%ui need_ack:%d"                  \
+                   " number:%L encoded nl:%d trunc:0x%xD",                    \
+                   ngx_quic_level_name((pkt)->level), (pkt)->payload.len,     \
+                   (pkt)->need_ack, (pkt)->number, (pkt)->num_len,            \
+                    (pkt)->trunc);
+
+
 static ngx_int_t ngx_quic_create_datagrams(ngx_connection_t *c);
 static void ngx_quic_commit_send(ngx_connection_t *c, ngx_quic_send_ctx_t *ctx);
 static void ngx_quic_revert_send(ngx_connection_t *c, ngx_quic_send_ctx_t *ctx,
@@ -59,21 +65,6 @@ static void ngx_quic_set_packet_number(ngx_quic_header_t *pkt,
     ngx_quic_send_ctx_t *ctx);
 static size_t ngx_quic_path_limit(ngx_connection_t *c, ngx_quic_path_t *path,
     size_t size);
-
-
-size_t
-ngx_quic_max_udp_payload(ngx_connection_t *c)
-{
-    /* TODO: path MTU discovery */
-
-#if (NGX_HAVE_INET6)
-    if (c->sockaddr->sa_family == AF_INET6) {
-        return NGX_QUIC_MAX_UDP_PAYLOAD_OUT6;
-    }
-#endif
-
-    return NGX_QUIC_MAX_UDP_PAYLOAD_OUT;
-}
 
 
 ngx_int_t
@@ -142,10 +133,7 @@ ngx_quic_create_datagrams(ngx_connection_t *c)
 
         p = dst;
 
-        len = ngx_min(qc->ctp.max_udp_payload_size,
-                      NGX_QUIC_MAX_UDP_PAYLOAD_SIZE);
-
-        len = ngx_quic_path_limit(c, path, len);
+        len = ngx_quic_path_limit(c, path, path->mtu);
 
         pad = ngx_quic_get_padding_level(c);
 
@@ -281,7 +269,7 @@ ngx_quic_allow_segmentation(ngx_connection_t *c)
         return 0;
     }
 
-    if (qc->path->limited) {
+    if (!qc->path->validated) {
         /* don't even try to be faster on non-validated paths */
         return 0;
     }
@@ -299,9 +287,7 @@ ngx_quic_allow_segmentation(ngx_connection_t *c)
     ctx = ngx_quic_get_send_ctx(qc, ssl_encryption_application);
 
     bytes = 0;
-
-    len = ngx_min(qc->ctp.max_udp_payload_size,
-                  NGX_QUIC_MAX_UDP_SEGMENT_BUF);
+    len = ngx_min(qc->path->mtu, NGX_QUIC_MAX_UDP_SEGMENT_BUF);
 
     for (q = ngx_queue_head(&ctx->frames);
          q != ngx_queue_sentinel(&ctx->frames);
@@ -345,8 +331,7 @@ ngx_quic_create_segments(ngx_connection_t *c)
         return NGX_ERROR;
     }
 
-    segsize = ngx_min(qc->ctp.max_udp_payload_size,
-                      NGX_QUIC_MAX_UDP_SEGMENT_BUF);
+    segsize = ngx_min(path->mtu, NGX_QUIC_MAX_UDP_SEGMENT_BUF);
     p = dst;
     end = dst + sizeof(dst);
 
@@ -358,7 +343,7 @@ ngx_quic_create_segments(ngx_connection_t *c)
 
         len = ngx_min(segsize, (size_t) (end - p));
 
-        if (len && cg->in_flight < cg->window) {
+        if (len && cg->in_flight + (p - dst) < cg->window) {
 
             n = ngx_quic_output_packet(c, ctx, p, len, len);
             if (n == NGX_ERROR) {
@@ -525,7 +510,7 @@ ngx_quic_output_packet(ngx_connection_t *c, ngx_quic_send_ctx_t *ctx,
     ssize_t                 flen;
     ngx_str_t               res;
     ngx_int_t               rc;
-    ngx_uint_t              nframes, expand;
+    ngx_uint_t              nframes;
     ngx_msec_t              now;
     ngx_queue_t            *q;
     ngx_quic_frame_t       *f;
@@ -542,6 +527,21 @@ ngx_quic_output_packet(ngx_connection_t *c, ngx_quic_send_ctx_t *ctx,
                    ngx_quic_level_name(ctx->level), max, min);
 
     qc = ngx_quic_get_connection(c);
+
+    if (!ngx_quic_keys_available(qc->keys, ctx->level, 1)) {
+        ngx_log_error(NGX_LOG_ALERT, c->log, 0, "quic %s write keys discarded",
+                      ngx_quic_level_name(ctx->level));
+
+        while (!ngx_queue_empty(&ctx->frames)) {
+            q = ngx_queue_head(&ctx->frames);
+            ngx_queue_remove(q);
+
+            f = ngx_queue_data(q, ngx_quic_frame_t, queue);
+            ngx_quic_free_frame(c, f);
+        }
+
+        return 0;
+    }
 
     ngx_quic_init_packet(c, ctx, &pkt, qc->path);
 
@@ -560,40 +560,12 @@ ngx_quic_output_packet(ngx_connection_t *c, ngx_quic_send_ctx_t *ctx,
     nframes = 0;
     p = src;
     len = 0;
-    expand = 0;
 
     for (q = ngx_queue_head(&ctx->frames);
          q != ngx_queue_sentinel(&ctx->frames);
          q = ngx_queue_next(q))
     {
         f = ngx_queue_data(q, ngx_quic_frame_t, queue);
-
-        if (!expand && (f->type == NGX_QUIC_FT_PATH_RESPONSE
-                        || f->type == NGX_QUIC_FT_PATH_CHALLENGE))
-        {
-            /*
-             * RFC 9000, 8.2.1.  Initiating Path Validation
-             *
-             * An endpoint MUST expand datagrams that contain a
-             * PATH_CHALLENGE frame to at least the smallest allowed
-             * maximum datagram size of 1200 bytes...
-             *
-             * (same applies to PATH_RESPONSE frames)
-             */
-
-            if (max < 1200) {
-                /* expanded packet will not fit */
-                break;
-            }
-
-            if (min < 1200) {
-                min = 1200;
-
-                min_payload = ngx_quic_payload_size(&pkt, min);
-            }
-
-            expand = 1;
-        }
 
         if (len >= max_payload) {
             break;
@@ -615,6 +587,11 @@ ngx_quic_output_packet(ngx_connection_t *c, ngx_quic_send_ctx_t *ctx,
             pkt.need_ack = 1;
         }
 
+        f->pnum = ctx->pnum;
+        f->first = now;
+        f->last = now;
+        f->plen = 0;
+
         ngx_quic_log_frame(c->log, f, 1);
 
         flen = ngx_quic_create_frame(p, f);
@@ -625,16 +602,7 @@ ngx_quic_output_packet(ngx_connection_t *c, ngx_quic_send_ctx_t *ctx,
         len += flen;
         p += flen;
 
-        f->pnum = ctx->pnum;
-        f->first = now;
-        f->last = now;
-        f->plen = 0;
-
         nframes++;
-
-        if (f->flush) {
-            break;
-        }
     }
 
     if (nframes == 0) {
@@ -651,11 +619,7 @@ ngx_quic_output_packet(ngx_connection_t *c, ngx_quic_send_ctx_t *ctx,
 
     res.data = data;
 
-    ngx_log_debug6(NGX_LOG_DEBUG_EVENT, c->log, 0,
-                   "quic packet tx %s bytes:%ui"
-                   " need_ack:%d number:%L encoded nl:%d trunc:0x%xD",
-                   ngx_quic_level_name(ctx->level), pkt.payload.len,
-                   pkt.need_ack, pkt.number, pkt.num_len, pkt.trunc);
+    ngx_quic_log_packet(c->log, &pkt);
 
     if (ngx_quic_encrypt(&pkt, &res) != NGX_OK) {
         return NGX_ERROR;
@@ -940,12 +904,12 @@ ngx_quic_send_early_cc(ngx_connection_t *c, ngx_quic_header_t *inpkt,
     frame.u.close.reason.data = (u_char *) reason;
     frame.u.close.reason.len = ngx_strlen(reason);
 
+    ngx_quic_log_frame(c->log, &frame, 1);
+
     len = ngx_quic_create_frame(NULL, &frame);
     if (len > NGX_QUIC_MAX_UDP_PAYLOAD_SIZE) {
         return NGX_ERROR;
     }
-
-    ngx_quic_log_frame(c->log, &frame, 1);
 
     len = ngx_quic_create_frame(src, &frame);
     if (len == -1) {
@@ -981,13 +945,19 @@ ngx_quic_send_early_cc(ngx_connection_t *c, ngx_quic_header_t *inpkt,
 
     res.data = dst;
 
+    ngx_quic_log_packet(c->log, &pkt);
+
     if (ngx_quic_encrypt(&pkt, &res) != NGX_OK) {
+        ngx_quic_keys_cleanup(pkt.keys);
         return NGX_ERROR;
     }
 
     if (ngx_quic_send(c, res.data, res.len, c->sockaddr, c->socklen) < 0) {
+        ngx_quic_keys_cleanup(pkt.keys);
         return NGX_ERROR;
     }
+
+    ngx_quic_keys_cleanup(pkt.keys);
 
     return NGX_DONE;
 }
@@ -1174,8 +1144,9 @@ ngx_quic_send_ack(ngx_connection_t *c, ngx_quic_send_ctx_t *ctx)
     frame->u.ack.delay = ack_delay;
     frame->u.ack.range_count = ctx->nranges;
     frame->u.ack.first_range = ctx->first_range;
+    frame->len = ngx_quic_create_frame(NULL, frame);
 
-    ngx_quic_queue_frame(qc, frame);
+    ngx_queue_insert_head(&ctx->frames, &frame->queue);
 
     return NGX_OK;
 }
@@ -1234,12 +1205,16 @@ ngx_quic_frame_sendto(ngx_connection_t *c, ngx_quic_frame_t *frame,
     pad = 4 - pkt.num_len;
     min_payload = ngx_max(min_payload, pad);
 
+#if (NGX_DEBUG)
+    frame->pnum = pkt.number;
+#endif
+
+    ngx_quic_log_frame(c->log, frame, 1);
+
     len = ngx_quic_create_frame(NULL, frame);
     if (len > NGX_QUIC_MAX_UDP_PAYLOAD_SIZE) {
         return NGX_ERROR;
     }
-
-    ngx_quic_log_frame(c->log, frame, 1);
 
     len = ngx_quic_create_frame(src, frame);
     if (len == -1) {
@@ -1256,6 +1231,8 @@ ngx_quic_frame_sendto(ngx_connection_t *c, ngx_quic_frame_t *frame,
 
     res.data = dst;
 
+    ngx_quic_log_packet(c->log, &pkt);
+
     if (ngx_quic_encrypt(&pkt, &res) != NGX_OK) {
         return NGX_ERROR;
     }
@@ -1264,7 +1241,7 @@ ngx_quic_frame_sendto(ngx_connection_t *c, ngx_quic_frame_t *frame,
 
     sent = ngx_quic_send(c, res.data, res.len, path->sockaddr, path->socklen);
     if (sent < 0) {
-        return NGX_ERROR;
+        return sent;
     }
 
     path->sent += sent;
@@ -1278,7 +1255,7 @@ ngx_quic_path_limit(ngx_connection_t *c, ngx_quic_path_t *path, size_t size)
 {
     off_t  max;
 
-    if (path->limited) {
+    if (!path->validated) {
         max = path->received * 3;
         max = (path->sent >= max) ? 0 : max - path->sent;
 

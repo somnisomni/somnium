@@ -9,8 +9,8 @@
 #define _NGINX_H_INCLUDED_
 
 
-#define nginx_version      1025002
-#define NGINX_VERSION      "1.25.2"
+#define nginx_version      1025004
+#define NGINX_VERSION      "1.25.4"
 #define NGINX_VER          "nginx/" NGINX_VERSION
 
 #define SOMNIUM_VERSION    "2.9.0"

@@ -55,6 +55,13 @@ ifneq ($(DEB_BUILD_ARCH),$(DEB_HOST_ARCH))
   $(info [*] Will use OpenSSL build target: "$(OPENSSL_CROSS_COMPILE_OPTION)")
 endif
 
+OPENSSL_PATH = $(CURDIR)/modules/openssl
+ifdef USE_BORINGSSL
+  OPENSSL_PATH := $(CURDIR)/modules/boringssl
+
+  $(info [*] Will use BoringSSL instead of OpenSSL)
+endif
+
 export CC := $(CC)
 export CXX := $(CXX)
 export CPP := $(CPP)
@@ -71,7 +78,7 @@ common_configure_flags := \
       --with-cpp="$(CPP)" \
       --with-cc-opt="$(debian_cflags)" \
       --with-ld-opt="$(debian_ldflags)" \
-      --with-openssl="$(CURDIR)/modules/openssl" \
+      --with-openssl="$(OPENSSL_PATH)" \
       --with-openssl-opt="no-ssl3 no-idea no-weak-ssl-ciphers $(OPENSSL_CROSS_COMPILE_OPTION)" \
       --with-zlib="$(CURDIR)/modules/zlib-ng" \
       --with-pcre="$(CURDIR)/modules/pcre2" \

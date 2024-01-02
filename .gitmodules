@@ -3,6 +3,11 @@
 	url = https://github.com/openssl/openssl
 	branch = openssl-3.2
 	ignore = dirty
+[submodule "boringssl"]
+	path = modules/boringssl
+	url = https://github.com/google/boringssl
+	branch = master
+	ignore = dirty
 [submodule "ngx_brotli"]
 	path = modules/ngx_brotli
 	url = https://github.com/wxx9248/ngx_brotli

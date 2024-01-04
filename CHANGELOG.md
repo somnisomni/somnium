@@ -1,5 +1,13 @@
 변경 사항
 ========
+somnium 2.10.0
+--------------
+  - NGINX 최신 소스 코드 병합
+  - OpenSSL 소스 브랜치를 `openssl-3.2`로 변경
+  - 빌드 시 선택적으로 OpenSSL 대신 BoringSSL을 사용하도록 설정 가능 **(불완전함)**
+    - `dpkg-buildpackage` 시, 환경변수 `USE_BORINGSSL=1` 설정 필요
+  - OAuth2-Proxy를 위한 스니펫 추가
+
 somnium 2.9.0
 -------------
   - NGINX 최신 소스 코드 병합

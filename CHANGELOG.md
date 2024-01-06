@@ -1,5 +1,14 @@
 변경 사항
 ========
+somnium 2.11.0
+--------------
+  - BoringSSL을 사용한 빌드 정상 지원
+    - `dpkg-buildpackage` 시, 환경변수 `USE_BORINGSSL=1` 설정 필요  
+      ex) `$ USE_BORINGSSL=1 dpkg-buildpackage -b -us -uc`
+  - HTTP/3 활성화를 위한 헤더 스니펫 추가 (`snippets/http3.conf`)
+  - 0-RTT 정상 활성화를 위해 `nginx.conf` 내에 `ssl_session_tickets off;` 구문 제거 (주석 처리)
+  - BoringSSL을 사용한 빌드로 릴리즈 업로드
+
 somnium 2.10.0
 --------------
   - NGINX 최신 소스 코드 병합

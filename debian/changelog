@@ -1,3 +1,9 @@
+nginx (1.25.4-2+somnium2.11.0) jammy; urgency=medium
+
+  * See CHANGELOG.md in source tree root
+
+ -- somni <me@somni.one>  Sat, 6 Jan 2024 8:34:00 +0900
+
 nginx (1.25.4-1+somnium2.10.0) jammy; urgency=medium
 
   * See CHANGELOG.md in source tree root

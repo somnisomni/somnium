@@ -1,0 +1,35 @@
+
+# Copyright (C) Igor Sysoev
+# Copyright (C) Nginx, Inc.
+# Copyright (C) somni
+
+case $OPENSSL in
+    /*) ngx_prefix="$OPENSSL/.boringssl" ;;
+    *)  ngx_prefix="$PWD/$OPENSSL/.boringssl" ;;
+esac
+
+boringssl_build=$OPENSSL/build
+
+cat << END                                            >> $NGX_MAKEFILE
+
+$OPENSSL/.boringssl/include/openssl/ssl.h:	$NGX_MAKEFILE
+	cd $OPENSSL \\
+    && if [ -d $boringssl_build ]; then rm -rf $boringssl_build/*; fi \\
+    && mkdir -p $boringssl_build \\
+    && echo \* > $boringssl_build/.gitignore \\
+    && if [ -d $ngx_prefix ]; then rm -rf $ngx_prefix/*; fi \\
+    && mkdir -p $ngx_prefix \\
+    && echo \* > $ngx_prefix/.gitignore \\
+    && mkdir -p $ngx_prefix/lib \\
+    && mkdir -p $ngx_prefix/include/openssl \\
+    && cp -r $OPENSSL/include/openssl $ngx_prefix/include/ \\
+    && cd $boringssl_build \\
+	&& if [ -f Makefile ]; then \$(MAKE) clean; fi \\
+    && cmake $OPENSSL \\
+	&& \$(MAKE) \\
+    && cp $boringssl_build/crypto/libcrypto.a $ngx_prefix/lib/libcrypto.a \\
+    && cp $boringssl_build/ssl/libssl.a       $ngx_prefix/lib/libssl.a \\
+    && touch $ngx_prefix/include/openssl/ssl.h
+
+END
+# cmake -DCMAKE_BUILD_TYPE=Release $OPENSSL  # causes error in crypto/bytestring/cbs.c (stringop-overflow)

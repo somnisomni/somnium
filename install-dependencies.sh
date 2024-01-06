@@ -17,3 +17,9 @@ sudo apt install --no-install-recommends \
   libxslt1-dev \
   po-debconf \
   quilt
+
+# Install build dependencies for BoringSSL
+sudo apt install --no-install-recommends \
+  cmake \
+  golang
+  

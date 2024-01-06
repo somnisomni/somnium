@@ -22,7 +22,11 @@ fi
 
 
 if [ $USE_OPENSSL = YES ]; then
-    . auto/lib/openssl/conf
+    if [ $USE_OPENSSL_BORINGSSL = YES ]; then
+        . auto/lib/openssl-boringssl/conf
+    else
+        . auto/lib/openssl/conf
+    fi
 fi
 
 if [ $USE_ZLIB = YES ]; then

@@ -28,6 +28,17 @@ case $OPENSSL in
     *)     echo "  + using OpenSSL library: $OPENSSL" ;;
 esac
 
+if [ $USE_OPENSSL_BORINGSSL = NO ]; then
+    case $USE_OPENSSL_QUIC in
+        YES)   echo "    - using OpenSSL compatibility layer for QUIC" ;;
+        NO)    echo "    - OpenSSL compatibility layer for QUIC is not used" ;;
+    esac
+else
+    case $USE_OPENSSL_BORINGSSL in
+        YES)   echo "    - using different build procedure for BoringSSL" ;;
+    esac
+fi
+
 case $ZLIB in
     YES)   echo "  + using system zlib library" ;;
     NONE)  echo "  + zlib library is not used" ;;

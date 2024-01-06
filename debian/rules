@@ -55,8 +55,10 @@ ifneq ($(DEB_BUILD_ARCH),$(DEB_HOST_ARCH))
   $(info [*] Will use OpenSSL build target: "$(OPENSSL_CROSS_COMPILE_OPTION)")
 endif
 
+OPENSSL_IS_BORINGSSL = 0
 OPENSSL_PATH = $(CURDIR)/modules/openssl
 ifdef USE_BORINGSSL
+  OPENSSL_IS_BORINGSSL = 1
   OPENSSL_PATH := $(CURDIR)/modules/boringssl
 
   $(info [*] Will use BoringSSL instead of OpenSSL)
@@ -104,6 +106,10 @@ common_configure_flags := \
       --with-threads \
       --with-file-aio
 
+ifeq ($(OPENSSL_IS_BORINGSSL),1)
+  common_configure_flags += --with-openssl-boringssl
+endif
+
 somnium_configure_flags := \
       $(common_configure_flags) \
       --with-http_dav_module \
@@ -142,6 +148,7 @@ somnium_configure_flags := \
 #		--with-http_mp4_module
 #		--with-http_perl_module
 #		--with-http_random_index_module
+
 
 %:
 	dh $@
